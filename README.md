@@ -1,5 +1,3 @@
-# utl-truncated-string-join-to-select-records-with-the-same-prefix-python-polar-sas-r-python-sql
-Truncated string join to select records with the same prefix python polar sas r python sql
     %let pgm=utl-truncated-string-join-to-select-records-with-the-same-prefix-python-polar-sas-r-python-sql;
 
     Truncated string join to select records with the same prefix python polar sas r python sql
@@ -23,6 +21,51 @@ Truncated string join to select records with the same prefix python polar sas r 
     https://tinyurl.com/2an27wxy
     https://stackoverflow.com/questions/79079917/filter-polars-dataframe-where-values-starts-with-any-string-in-a-list
 
+    /*               _     _
+     _ __  _ __ ___ | |__ | | ___ _ __ ___
+    | `_ \| `__/ _ \| `_ \| |/ _ \ `_ ` _ \
+    | |_) | | | (_) | |_) | |  __/ | | | | |
+    | .__/|_|  \___/|_.__/|_|\___|_| |_| |_|
+    |_|
+    */
+
+    /**************************************************************************************************************************/
+    /*                                     |                                           |                                      */
+    /*           INPUT                     |  PROCESS (MATCH ON PREFIX)                |                                      */
+    /*                                     |                                           |                                      */
+    /*                                     |                                           |                                      */
+    /*  SD1.PREFIX         SD1.STRING      |       PROCESS                             |     OUTPUT                           */
+    /*                                     |                                           |                                      */
+    /*   PREFIX            STRING          |  PREFIX    STRING                         | PREFIX    STRING                     */
+    /*                                     |                                           |                                      */
+    /*   123               12345           |            123                            |  123      12345                      */
+    /*   544               12              |   123      12345    has prefix            |  544      54467899                   */
+    /*   55443345          54467899        |                                           |                                      */
+    /*                     54335233        |            544                            |                                      */
+    /*                                     |   544      54467899 has prefix            |                                      */
+    /*                                     |                                           |                                      */
+    /*                                     |                                           |                                      */
+    /*                                     |   SAME CODE IN SAS, R AND PYTHON          |                                      */
+    /*                                     |   ==============================          |                                      */
+    /*                                     |                                           |                                      */
+    /*                                     |   select                                  |                                      */
+    /*                                     |      l.prefix                             |                                      */
+    /*                                     |     ,r.string                             |                                      */
+    /*                                     |   from                                    |                                      */
+    /*                                     |      prefix as l inner join string as r   |                                      */
+    /*                                     |   where                                   |                                      */
+    /*                                     |     substr(l.prefix,1,length(l.prefix))   |                                      */
+    /*                                     |       =substr(r.string,1,length(l.prefix))|                                      */
+    /*                                     |                                           |                                      */
+    /*                                     |                                           |                                      */
+    /*                                     |   PYTHON POLAR LANGUAGE                   |                                      */
+    /*                                     |   =====================                   |                                      */
+    /*                                     |                                           |                                      */
+    /*                                     |   res=df[df['STRING'].apply(lambda x: \   |                                      */
+    /*                                     |     any(x.startswith(prefix) \            |                                      */
+    /*                                     |     for prefix in prefixes))]             |                                      */
+    /*                                     |                                           |                                      */
+    /**************************************************************************************************************************/
 
     /*                   _
     (_)_ __  _ __  _   _| |_
@@ -53,6 +96,20 @@ Truncated string join to select records with the same prefix python polar sas r 
     55443345
     ;;;;
     run;quit;
+
+    /**************************************************************************************************************************/
+    /*                                                                                                                        */
+    /*  SD1.PREFIX total obs=3                       SD1.STRING total obs=5                                                   */
+    /*                                                                                                                        */
+    /*  Obs    PREFIX                                Obs    STRING                                                            */
+    /*                                                                                                                        */
+    /*   1     123                                    1     12345                                                             */
+    /*   2     544                                    2     12                                                                */
+    /*   3     55443345                               3     54467899                                                          */
+    /*                                                4     54335233                                                          */
+    /*                                                                                                                        */
+    /**************************************************************************************************************************/
+
 
     /*                             _
     / |  ___  __ _ ___   ___  __ _| |
@@ -205,3 +262,4 @@ Truncated string join to select records with the same prefix python polar sas r 
      \___|_| |_|\__,_|
 
     */
+
